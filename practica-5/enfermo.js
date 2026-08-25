@@ -26,6 +26,13 @@ function calcularTotalYActualizarInventario(items, inventario) {
   return { total };
 }
 
+function notificarCliente(whatsapp, telefono, totalFinal) {
+  whatsapp.enviar(
+    telefono,
+    "Su pedido fue procesado por L." + totalFinal
+  );
+}
+
 function procesarPedido(pedido, inventario, db, whatsapp) {
   if (!pedido.cliente || !pedido.cliente.nombre) {
     return "Cliente inválido";
@@ -54,10 +61,7 @@ function procesarPedido(pedido, inventario, db, whatsapp) {
   console.log("Cliente: " + pedido.cliente.nombre);
   console.log("Total: L." + totalFinal);
 
-  whatsapp.enviar(
-    pedido.cliente.telefono,
-    "Su pedido fue procesado por L." + totalFinal
-  );
+  notificarCliente(whatsapp, pedido.cliente.telefono, totalFinal);
 
   if (totalFinal > 1000) {
     console.log("Cliente con compra grande");
