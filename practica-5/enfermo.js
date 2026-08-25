@@ -1,5 +1,31 @@
 const TASA_IMPUESTO = 0.15;
 
+function calcularTotalYActualizarInventario(items, inventario) {
+  let total = 0;
+
+  for (let indice = 0; indice < items.length; indice++) {
+    let itemPedido = items[indice];
+    let producto = inventario.find(prod => prod.nombre === itemPedido.nombre);
+
+    if (!producto) {
+      return { error: "Producto " + itemPedido.nombre + " no existe" };
+    }
+
+    if (itemPedido.cantidad <= 0) {
+      return { error: "Cantidad inválida" };
+    }
+
+    if (producto.stock < itemPedido.cantidad) {
+      return { error: "Stock insuficiente para " + itemPedido.nombre };
+    }
+
+    total = total + producto.precio * itemPedido.cantidad;
+    producto.stock = producto.stock - itemPedido.cantidad;
+  }
+
+  return { total };
+}
+
 function procesarPedido(pedido, inventario, db, whatsapp) {
   if (!pedido.cliente || !pedido.cliente.nombre) {
     return "Cliente inválido";
@@ -9,27 +35,11 @@ function procesarPedido(pedido, inventario, db, whatsapp) {
     return "Pedido vacío";
   }
 
-  let total = 0;
-
-  for (let indice = 0; indice < pedido.items.length; indice++) {
-    let itemPedido = pedido.items[indice];
-    let producto = inventario.find(prod => prod.nombre === itemPedido.nombre);
-
-    if (!producto) {
-      return "Producto " + itemPedido.nombre + " no existe";
-    }
-
-    if (itemPedido.cantidad <= 0) {
-      return "Cantidad inválida";
-    }
-
-    if (producto.stock < itemPedido.cantidad) {
-      return "Stock insuficiente para " + itemPedido.nombre;
-    }
-
-    total = total + producto.precio * itemPedido.cantidad;
-    producto.stock = producto.stock - itemPedido.cantidad;
+  const resultado = calcularTotalYActualizarInventario(pedido.items, inventario);
+  if (resultado.error) {
+    return resultado.error;
   }
+  let total = resultado.total;
 
   let impuesto = total * TASA_IMPUESTO;
   let totalFinal = total + impuesto;
