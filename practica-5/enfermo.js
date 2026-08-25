@@ -1,3 +1,5 @@
+const TASA_IMPUESTO = 0.15;
+
 function procesarPedido(pedido, inventario, db, whatsapp) {
   if (!pedido.cliente || !pedido.cliente.nombre) {
     return "Cliente inválido";
@@ -29,7 +31,7 @@ function procesarPedido(pedido, inventario, db, whatsapp) {
     producto.stock = producto.stock - itemPedido.cantidad;
   }
 
-  let impuesto = total * 0.15;
+  let impuesto = total * TASA_IMPUESTO;
   let totalFinal = total + impuesto;
 
   db.guardar({
