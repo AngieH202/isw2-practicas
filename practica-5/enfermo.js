@@ -9,24 +9,24 @@ function procesarPedido(pedido, inventario, db, whatsapp) {
 
   let total = 0;
 
-  for (let i = 0; i < pedido.items.length; i++) {
-    let item = pedido.items[i];
-    let producto = inventario.find(p => p.nombre === item.nombre);
+  for (let indice = 0; indice < pedido.items.length; indice++) {
+    let itemPedido = pedido.items[indice];
+    let producto = inventario.find(prod => prod.nombre === itemPedido.nombre);
 
     if (!producto) {
-      return "Producto " + item.nombre + " no existe";
+      return "Producto " + itemPedido.nombre + " no existe";
     }
 
-    if (item.cantidad <= 0) {
+    if (itemPedido.cantidad <= 0) {
       return "Cantidad inválida";
     }
 
-    if (producto.stock < item.cantidad) {
-      return "Stock insuficiente para " + item.nombre;
+    if (producto.stock < itemPedido.cantidad) {
+      return "Stock insuficiente para " + itemPedido.nombre;
     }
 
-    total = total + producto.precio * item.cantidad;
-    producto.stock = producto.stock - item.cantidad;
+    total = total + producto.precio * itemPedido.cantidad;
+    producto.stock = producto.stock - itemPedido.cantidad;
   }
 
   let impuesto = total * 0.15;
