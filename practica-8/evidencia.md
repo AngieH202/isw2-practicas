@@ -10,11 +10,14 @@ El pipeline ejecuta automáticamente los tests de las prácticas 4 y 5 cada vez 
 
 ## Run verde
 
-Pendiente de agregar captura del primer run exitoso.
+El pipeline se ejecutó correctamente y los tests de las prácticas 4 y 5 finalizaron exitosamente.
+
+![Run verde] (image.png)
 
 ## URL pública
+ 
+https://angieh202.github.io/isw2-practicas/
 
-Pendiente de agregar la URL de GitHub Pages.
 
 ## ¿Qué corre mi pipeline?
 
