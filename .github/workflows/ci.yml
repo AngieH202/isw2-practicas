@@ -22,3 +22,6 @@ jobs:
 
       - name: Ejecutar tests de Práctica 5
         run: node practica-5/enfermo.test.js
+
+      - name: Ejecutar tests de Práctica 9
+        run: node practica-9/abonos.test.js
